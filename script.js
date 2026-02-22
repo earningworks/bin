@@ -1,26 +1,25 @@
-// Utility: Wait for DOM before execution
+// GitHub Pages Favourable Script - V1.2
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- DOM Elements ---
     const elements = {
         canvas: document.getElementById('spinWheel'),
         spinBtn: document.getElementById('spinBtn'),
+        withdrawBtn: document.getElementById('withdrawBtn'),
+        headerWithdraw: document.getElementById('headerWithdraw'),
         balanceValue: document.getElementById('balanceValue'),
         toast: document.getElementById('toast'),
         gameOverlay: document.getElementById('gameOverlay'),
         gameTitle: document.getElementById('gameTitle'),
         gameTimer: document.getElementById('gameTimer'),
         gameFailBtn: document.getElementById('gameTryAgain'),
-        gameStatus: document.getElementById('gameStatus')
     };
 
-    // --- State Variables ---
     let state = {
-        currentBalance: 0,
+        balance: 0,
         ang: 0,
         angVel: 0,
-        animId: null,
-        gameInterval: null
+        gameInt: null
     };
 
     // --- Spin Wheel Config ---
@@ -37,8 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctx = elements.canvas.getContext('2d');
         const tot = sectors.length;
         const rad = elements.canvas.width / 2;
-        const PI = Math.PI;
-        const TAU = 2 * PI;
+        const TAU = 2 * Math.PI;
         const arc = TAU / tot;
 
         const drawSector = (sector, i) => {
@@ -51,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.lineTo(rad, rad);
             ctx.fill();
 
-            // Text Label
+            // Label
             ctx.translate(rad, rad);
             ctx.rotate(angle + arc / 2);
             ctx.textAlign = "right";
@@ -63,16 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const renderWheel = () => {
-            ctx.clearRect(0, 0, elements.canvas.width, elements.canvas.height);
             sectors.forEach(drawSector);
-        };
-
-        const rotateWheel = () => {
-            elements.canvas.style.transform = `rotate(${state.ang - PI / 2}rad)`;
-        };
-
-        const getWheelIndex = () => {
-            return Math.floor(tot - (state.ang / TAU) * tot) % tot;
         };
 
         const spinEngine = () => {
@@ -80,85 +69,70 @@ document.addEventListener('DOMContentLoaded', () => {
                 state.angVel *= 0.985;
                 state.ang += state.angVel;
                 state.ang %= TAU;
-                rotateWheel();
+                elements.canvas.style.transform = `rotate(${state.ang - Math.PI / 2}rad)`;
                 requestAnimationFrame(spinEngine);
             } else {
                 state.angVel = 0;
-                if (elements.spinBtn) elements.spinBtn.disabled = false;
-                const result = sectors[getWheelIndex()];
-                handleSpinResult(result.label);
+                elements.spinBtn.disabled = false;
+                const index = Math.floor(tot - (state.ang / TAU) * tot) % tot;
+                handleResult(sectors[index].label);
             }
         };
 
-        const handleSpinResult = (label) => {
+        const handleResult = (label) => {
             if (label === "Try Again") {
-                showToast("Oops! Try Again.");
+                showToast("Try Again! One more spin?");
             } else {
                 const amount = parseInt(label.replace('₹', ''));
-                state.currentBalance += amount;
-                if (elements.balanceValue) elements.balanceValue.innerText = `₹${state.currentBalance}`;
+                state.balance += amount;
+                if (elements.balanceValue) elements.balanceValue.innerText = `₹${state.balance}`;
                 showToast(`Congrats! Won ${label}`);
+
+                // Show Withdraw Buttons (As Requested)
+                if (elements.withdrawBtn) elements.withdrawBtn.style.display = "flex";
+                if (elements.headerWithdraw) elements.headerWithdraw.style.display = "flex";
             }
         };
 
-        if (elements.spinBtn) {
-            elements.spinBtn.addEventListener('click', () => {
-                if (state.angVel > 0) return;
-                elements.spinBtn.disabled = true;
-                state.angVel = Math.random() * (0.45 - 0.35) + 0.35;
-                spinEngine();
-            });
-        }
+        elements.spinBtn.addEventListener('click', () => {
+            if (state.angVel > 0) return;
+            elements.spinBtn.disabled = true;
+            state.angVel = Math.random() * (0.45 - 0.35) + 0.35;
+            spinEngine();
+        });
 
         renderWheel();
-        rotateWheel();
     }
 
-    // --- Arcade Game Logic ---
+    // --- Interactive Games (The Fail Mechanic) ---
     window.startMegaGame = (type) => {
         if (!elements.gameOverlay) return;
-
-        elements.gameOverlay.style.display = 'flex';
-        if (elements.gameFailBtn) elements.gameFailBtn.style.display = 'none';
-        if (elements.gameStatus) elements.gameStatus.style.display = 'block';
+        elements.gameOverlay.style.display = "flex";
+        elements.gameFailBtn.style.display = "none";
 
         let timer = 10;
-        if (elements.gameTimer) elements.gameTimer.innerText = `Time: ${timer}s`;
+        elements.gameTimer.innerText = `Time: ${timer}s`;
 
-        const titles = {
-            'dodge': "Dodge Master", 'jump': "Sky Jumper", 'click': "Click Speedster",
-            'gold': "Gold Miner", 'match': "Perfect Match", 'link': "Pattern Link",
-            'flash': "Flash Cards", 'seq': "Sequence Repeat", 'math': "Mega Math",
-            'trivia': "Fast Trivia", 'brick': "Brick Buster", 'space': "Space Shooter"
-        };
-
-        if (elements.gameTitle) elements.gameTitle.innerText = titles[type] || "Reward Game";
-
-        clearInterval(state.gameInterval);
-        state.gameInterval = setInterval(() => {
+        state.gameInt = setInterval(() => {
             timer--;
-            if (elements.gameTimer) elements.gameTimer.innerText = `Time: ${timer}s`;
+            elements.gameTimer.innerText = `Time: ${timer}s`;
             if (timer <= 0) {
-                clearInterval(state.gameInterval);
-                if (elements.gameStatus) elements.gameStatus.style.display = 'none';
-                if (elements.gameFailBtn) elements.gameFailBtn.style.display = 'block';
-                showToast("TIME EXPIRED! FAILED.");
+                clearInterval(state.gameInt);
+                elements.gameFailBtn.style.display = "block";
+                showToast("MISSION FAILED!");
             }
         }, 1000);
     };
 
     window.closeGame = () => {
-        clearInterval(state.gameInterval);
-        if (elements.gameOverlay) elements.gameOverlay.style.display = 'none';
+        clearInterval(state.gameInt);
+        if (elements.gameOverlay) elements.gameOverlay.style.display = "none";
     };
 
-    // --- Global Notifications ---
     function showToast(msg) {
         if (!elements.toast) return;
         elements.toast.innerText = msg;
         elements.toast.style.display = "block";
-        setTimeout(() => {
-            elements.toast.style.display = "none";
-        }, 3000);
+        setTimeout(() => { elements.toast.style.display = "none"; }, 3000);
     }
 });
