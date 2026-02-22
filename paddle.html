@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Paddle Pop | Earning Bot Games</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --green: #4ade80;
+            --gold: #fbbf24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: #fff;
+            text-align: center;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            background: #111;
+        }
+
+        canvas {
+            background: #000;
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            border-top: 2px solid #222;
+            touch-action: none;
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            background: rgba(0, 0, 0, 0.98);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid #333;
+            width: 85%;
+            max-width: 320px;
+            z-index: 100;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin-top: 15px;
+            border-radius: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .btn-green {
+            background: var(--green);
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-header">
+        <span id="score">Hits: 0/50</span>
+        <span style="color:var(--green)">Reward: ₹3000</span>
+    </div>
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="uic" class="ui-layer">
+        <h2 id="status">Win!</h2>
+        <p id="msg">Bounce the ball 50 times.</p>
+        <a id="redeem" href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796"
+            class="btn btn-green" style="display:none">REDEEM WIN</a>
+        <button onclick="location.reload()" class="btn btn-gold">TRY AGAIN</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight - 60;
+
+        let score = 0;
+        let gameActive = true;
+        const paddle = { w: 100, h: 10, x: canvas.width / 2 - 50, y: canvas.height - 30 };
+        const ball = { x: canvas.width / 2, y: 100, dx: 4, dy: 4, r: 8 };
+
+        function draw() {
+            if (!gameActive) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Ball
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+            ctx.fillStyle = '#4ade80';
+            ctx.fill();
+            ctx.closePath();
+
+            // Paddle
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
+
+            // Movement
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+
+            // Walls
+            if (ball.x + ball.r > canvas.width || ball.x - ball.r < 0) ball.dx *= -1;
+            if (ball.y - ball.r < 0) ball.dy *= -1;
+
+            // Paddle Collision
+            if (ball.y + ball.r > paddle.y && ball.x > paddle.x && ball.x < paddle.x + paddle.w) {
+                ball.dy *= -1;
+                score++;
+                document.getElementById('score').innerText = `Hits: ${score}/50`;
+                if (score >= 50) win();
+            }
+
+            // Lose
+            if (ball.y > canvas.height) fail();
+
+            requestAnimationFrame(draw);
+        }
+
+        function win() { gameActive = false; showUI('Win', 'Paddle Master! Reward Unlocked.'); }
+        function fail() { gameActive = false; showUI('Lose', 'Ball Dropped!'); }
+
+        function showUI(type, msg) {
+            document.getElementById('uic').style.display = 'block';
+            document.getElementById('status').innerText = type === 'Win' ? 'MISSION SUCCESS' : 'GAME OVER';
+            if (type === 'Win') document.getElementById('redeem').style.display = 'block';
+        }
+
+        window.addEventListener('touchmove', e => {
+            paddle.x = e.touches[0].clientX - paddle.w / 2;
+            if (paddle.x < 0) paddle.x = 0;
+            if (paddle.x > canvas.width - paddle.w) paddle.x = canvas.width - paddle.w;
+        });
+
+        draw();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Memory Peek | Earning Bot Games</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --green: #4ade80;
+            --gold: #fbbf24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: #fff;
+            text-align: center;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            background: #111;
+        }
+
+        .grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 20px;
+            align-content: center;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            background: #1a1a1a;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            border: 2px solid #333;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-front {
+            background: #222;
+        }
+
+        .card-back {
+            background: var(--green);
+            color: #000;
+            transform: rotateY(180deg);
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            background: rgba(0, 0, 0, 0.98);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid #333;
+            width: 85%;
+            max-width: 320px;
+            z-index: 100;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin-top: 15px;
+            border-radius: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .btn-green {
+            background: var(--green);
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-header">
+        <span id="score">Matches: 0/8</span>
+        <span style="color:var(--green)">Reward: ₹1800</span>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div id="uic" class="ui-layer">
+        <h2 id="status">Win!</h2>
+        <p id="msg">Match all pairs.</p>
+        <a id="redeem" href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796"
+            class="btn btn-green" style="display:none">REDEEM WIN</a>
+        <button onclick="location.reload()" class="btn btn-gold">TRY AGAIN</button>
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const icons = ['🔥', '💎', '🚀', '⭐', '🍀', '🍎', '🎁', '⚽'];
+        const cards = [...icons, ...icons];
+        let flipped = [];
+        let matches = 0;
+        let lock = false;
+
+        function init() {
+            cards.sort(() => Math.random() - 0.5);
+            grid.innerHTML = '';
+            cards.forEach((icon, i) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `<div class="card-inner"><div class="card-front"></div><div class="card-back">${icon}</div></div>`;
+                card.onclick = () => flip(card, icon);
+                grid.appendChild(card);
+            });
+        }
+
+        function flip(card, icon) {
+            if (lock || flipped.includes(card) || card.classList.contains('flipped')) return;
+            card.classList.add('flipped');
+            flipped.push({ card, icon });
+
+            if (flipped.length === 2) {
+                lock = true;
+                if (flipped[0].icon === flipped[1].icon) {
+                    matches++;
+                    document.getElementById('score').innerText = `Matches: ${matches}/8`;
+                    flipped = [];
+                    lock = false;
+                    if (matches === 8) showUI('Win', 'Memory Genius!');
+                } else {
+                    setTimeout(() => {
+                        flipped.forEach(f => f.card.classList.remove('flipped'));
+                        flipped = [];
+                        lock = false;
+                    }, 1000);
+                }
+            }
+        }
+
+        function showUI(type, msg) {
+            document.getElementById('uic').style.display = 'block';
+            document.getElementById('status').innerText = type === 'Win' ? 'MISSION SUCCESS' : 'GAME OVER';
+            if (type === 'Win') document.getElementById('redeem').style.display = 'block';
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

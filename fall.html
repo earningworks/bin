@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Deep Fall | Earning Bot Games</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --green: #4ade80;
+            --gold: #fbbf24;
+            --red: #ff4500;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            background: #111;
+            z-index: 10;
+        }
+
+        canvas {
+            background: #000;
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            touch-action: none;
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid #333;
+            width: 85%;
+            max-width: 320px;
+            z-index: 100;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin-top: 15px;
+            border-radius: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .btn-green {
+            background: var(--green);
+            color: #000;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+        }
+
+        .btn-back {
+            color: #666;
+            background: none;
+            text-decoration: underline;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-header">
+        <span id="score">Depth: 0m</span>
+        <span style="color:var(--green)">Reward: ₹800</span>
+    </div>
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="uic" class="ui-layer">
+        <h2 id="status">Win!</h2>
+        <p id="msg">Fall 500m to win reward.</p>
+        <a id="redeem" href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796"
+            class="btn btn-green" style="display:none">REDEEM WIN</a>
+        <button id="retry" onclick="location.reload()" class="btn btn-gold">TRY AGAIN</button>
+        <a href="../index.html" class="btn btn-back">Exit Game</a>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight - 60;
+
+        let score = 0;
+        let gameActive = true;
+        let platformSpeed = 4;
+        const player = { x: canvas.width / 2, y: 50, radius: 10, dy: 0 };
+        const platforms = [];
+
+        function createPlatform() {
+            const gapWidth = 80;
+            const gapX = Math.random() * (canvas.width - gapWidth);
+            platforms.push({ y: canvas.height, gapX, gapWidth });
+        }
+
+        function update() {
+            if (!gameActive) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Gravity & Logic
+            player.dy += 0.5; // Gravity
+            player.y += player.dy;
+
+            // Platforms
+            ctx.fillStyle = '#1e1e1e';
+            platforms.forEach((p, i) => {
+                p.y -= platformSpeed;
+                ctx.fillRect(0, p.y, p.gapX, 10);
+                ctx.fillRect(p.gapX + p.gapWidth, p.y, canvas.width, 10);
+
+                // Collision
+                if (player.y + player.radius > p.y && player.y - player.radius < p.y + 10) {
+                    if (player.x < p.gapX || player.x > p.gapX + p.gapWidth) {
+                        player.y = p.y - player.radius;
+                        player.dy = -platformSpeed;
+                    }
+                }
+
+                if (p.y < -10) {
+                    platforms.splice(i, 1);
+                    score += 5;
+                    document.getElementById('score').innerText = 'Depth: ' + score + 'm';
+                    if (score >= 500) {
+                        gameActive = false;
+                        showUI('Win', 'Goal Reached!');
+                    }
+                }
+            });
+
+            // Player
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#4ade80';
+            ctx.fill();
+            ctx.closePath();
+
+            // Fail Conditions
+            if (player.y < 0 || player.y > canvas.height) {
+                gameActive = false;
+                showUI('Lose', 'Out of Bounds!');
+            }
+
+            if (platforms.length < 6 && Math.random() < 0.02) createPlatform();
+            requestAnimationFrame(update);
+        }
+
+        function showUI(type, msg) {
+            const uic = document.getElementById('uic');
+            uic.style.display = 'block';
+            document.getElementById('status').innerText = type === 'Win' ? 'REWARD UNLOCKED!' : 'CAUGHT!';
+            document.getElementById('msg').innerText = msg;
+            if (type === 'Win') {
+                document.getElementById('redeem').style.display = 'block';
+            }
+        }
+
+        window.addEventListener('touchmove', e => {
+            player.x = e.touches[0].clientX;
+        });
+
+        for (let i = 0; i < 5; i++) {
+            platforms.push({ y: 200 + i * 150, gapX: Math.random() * (canvas.width - 80), gapWidth: 80 });
+        }
+        update();
+    </script>
+</body>
+
+</html>

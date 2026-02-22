@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Logo Quiz | Earning Bot Games</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --green: #4ade80;
+            --gold: #fbbf24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: #fff;
+            text-align: center;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            background: #111;
+        }
+
+        .quiz-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .brand-icon {
+            font-size: 5rem;
+            width: 120px;
+            height: 120px;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            border: 2px solid #333;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .opt {
+            background: #1a1a1a;
+            padding: 18px;
+            border-radius: 16px;
+            border: 2px solid #333;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            background: rgba(0, 0, 0, 0.98);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid #333;
+            width: 85%;
+            max-width: 320px;
+            z-index: 100;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin-top: 15px;
+            border-radius: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .btn-green {
+            background: var(--green);
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-header">
+        <span id="score">Level: 1/10</span>
+        <span style="color:var(--green)">Reward: ₹1000</span>
+    </div>
+
+    <div class="quiz-area">
+        <div id="icon" class="brand-icon">F</div>
+        <p style="margin-bottom: 20px; color: #888;">Identify the Global Brand</p>
+        <div class="options" id="opts"></div>
+    </div>
+
+    <div id="uic" class="ui-layer">
+        <h2 id="status">Win!</h2>
+        <p id="msg">Clear 10 levels to win.</p>
+        <a id="redeem" href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796"
+            class="btn btn-green" style="display:none">REDEEM WIN</a>
+        <button onclick="location.reload()" class="btn btn-gold">TRY AGAIN</button>
+    </div>
+
+    <script>
+        const questions = [
+            { i: 'F', a: 'Facebook', o: ['Facebook', 'Ferrari', 'Ford'] },
+            { i: 'A', a: 'Apple', o: ['Apple', 'Amazon', 'Adidas'] },
+            { i: 'N', a: 'Netflix', o: ['Netflix', 'Nike', 'Nokia'] },
+            { i: 'G', a: 'Google', o: ['Google', 'Gucci', 'Gap'] },
+            { i: 'M', a: 'McDonalds', o: ['McDonalds', 'Mercedes', 'Microsoft'] },
+            { i: 'T', a: 'Tesla', o: ['Tesla', 'Toyota', 'Twitter'] },
+            { i: 'S', a: 'Starbucks', o: ['Starbucks', 'Sony', 'Samsung'] },
+            { i: 'P', a: 'Pepsi', o: ['Pepsi', 'Puma', 'Prada'] },
+            { i: 'Y', a: 'Youtube', o: ['Youtube', 'Yahoo', 'Yelp'] },
+            { i: 'Z', a: 'Zara', o: ['Zara', 'Zomato', 'Zoom'] }
+        ];
+
+        let level = 1;
+
+        function load() {
+            const q = questions[level - 1];
+            document.getElementById('icon').innerText = q.i;
+            document.getElementById('score').innerText = `Level: ${level}/10`;
+            const optDiv = document.getElementById('opts');
+            optDiv.innerHTML = '';
+            q.o.sort(() => Math.random() - 0.5).forEach(o => {
+                const btn = document.createElement('div');
+                btn.className = 'opt';
+                btn.innerText = o;
+                btn.onclick = () => check(o);
+                optDiv.appendChild(btn);
+            });
+        }
+
+        function check(choice) {
+            if (choice === questions[level - 1].a) {
+                level++;
+                if (level > 10) showUI('Win', 'Branding Expert! Reward Unlocked.');
+                else load();
+            } else {
+                showUI('Lose', 'Wrong Brand Identified!');
+            }
+        }
+
+        function showUI(type, msg) {
+            document.getElementById('uic').style.display = 'block';
+            document.getElementById('status').innerText = type === 'Win' ? 'MISSION SUCCESS' : 'KNOWLEDGE GAP';
+            document.getElementById('msg').innerText = msg;
+            if (type === 'Win') document.getElementById('redeem').style.display = 'block';
+        }
+
+        load();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Logic Slide | Earning Bot Games</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --green: #4ade80;
+            --gold: #fbbf24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: #fff;
+            text-align: center;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            background: #111;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 20px;
+            max-width: 360px;
+            margin: auto;
+        }
+
+        .tile {
+            aspect-ratio: 1;
+            background: #222;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            border: 2px solid #333;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .empty {
+            background: transparent;
+            border: none;
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            background: rgba(0, 0, 0, 0.98);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid #333;
+            width: 85%;
+            max-width: 320px;
+            z-index: 100;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin-top: 15px;
+            border-radius: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .btn-green {
+            background: var(--green);
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-header">
+        <span id="moves">Moves: 0</span>
+        <span style="color:var(--green)">Reward: ₹2000</span>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div id="uic" class="ui-layer">
+        <h2 id="status">Win!</h2>
+        <p id="msg">Sort numbers in order.</p>
+        <a id="redeem" href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796"
+            class="btn btn-green" style="display:none">REDEEM WIN</a>
+        <button onclick="location.reload()" class="btn btn-gold">TRY AGAIN</button>
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        let tiles = [1, 2, 3, 4, 5, 6, 7, 8, null];
+        let moves = 0;
+
+        function shuffle() {
+            for (let i = tiles.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+            }
+        }
+
+        function render() {
+            grid.innerHTML = '';
+            tiles.forEach((t, i) => {
+                const tile = document.createElement('div');
+                tile.className = 'tile' + (t === null ? ' empty' : '');
+                tile.innerText = t || '';
+                tile.onclick = () => move(i);
+                grid.appendChild(tile);
+            });
+        }
+
+        function move(i) {
+            const emptyIdx = tiles.indexOf(null);
+            const adj = [i - 1, i + 1, i - 3, i + 3];
+            if (adj.includes(emptyIdx)) {
+                [tiles[i], tiles[emptyIdx]] = [tiles[emptyIdx], tiles[i]];
+                moves++;
+                document.getElementById('moves').innerText = `Moves: ${moves}`;
+                render();
+                checkWin();
+            }
+        }
+
+        function checkWin() {
+            const win = tiles.slice(0, 8).every((v, i) => v === i + 1);
+            if (win) showUI('Win', 'Logic Master! Reward Unlocked.');
+            else if (moves > 50) showUI('Lose', 'Too many moves!');
+        }
+
+        function showUI(type, msg) {
+            document.getElementById('uic').style.display = 'block';
+            document.getElementById('status').innerText = type === 'Win' ? 'MISSION SUCCESS' : 'GAME OVER';
+            if (type === 'Win') document.getElementById('redeem').style.display = 'block';
+        }
+
+        shuffle();
+        render();
+    </script>
+</body>
+
+</html>

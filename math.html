@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Speed Math | Earning Bot Games</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --green: #4ade80;
+            --gold: #fbbf24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: #fff;
+            text-align: center;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            background: #111;
+        }
+
+        .quiz-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .question {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .opt {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 16px;
+            border: 2px solid #333;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .timer-bar {
+            width: 100%;
+            height: 6px;
+            background: #222;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timer-fill {
+            width: 100%;
+            height: 100%;
+            background: var(--green);
+            transition: width linear;
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            background: rgba(0, 0, 0, 0.98);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid #333;
+            width: 85%;
+            max-width: 320px;
+            z-index: 100;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin-top: 15px;
+            border-radius: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .btn-green {
+            background: var(--green);
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-header">
+        <span id="score">Solved: 0/30</span>
+        <span style="color:var(--green)">Reward: ₹500</span>
+    </div>
+    <div class="timer-bar">
+        <div id="timer" class="timer-fill"></div>
+    </div>
+
+    <div class="quiz-area">
+        <div class="question" id="q">5 + 3</div>
+        <div class="options">
+            <div class="opt" onclick="check(this)">8</div>
+            <div class="opt" onclick="check(this)">6</div>
+            <div class="opt" onclick="check(this)">10</div>
+            <div class="opt" onclick="check(this)">4</div>
+        </div>
+    </div>
+
+    <div id="uic" class="ui-layer">
+        <h2 id="status">Win!</h2>
+        <p id="msg">Solve 30 problems in time.</p>
+        <a id="redeem" href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796"
+            class="btn btn-green" style="display:none">REDEEM WIN</a>
+        <button onclick="location.reload()" class="btn btn-gold">TRY AGAIN</button>
+    </div>
+
+    <script>
+        let score = 0;
+        let ans = 0;
+        let gameActive = true;
+        let timeInt;
+
+        function next() {
+            if (!gameActive) return;
+            const a = Math.floor(Math.random() * 20) + 1;
+            const b = Math.floor(Math.random() * 20) + 1;
+            const op = Math.random() > 0.5 ? '+' : '-';
+            ans = op === '+' ? a + b : a - b;
+            document.getElementById('q').innerText = `${a} ${op} ${b}`;
+
+            const opts = [ans, ans + 2, ans - 1, ans + 5];
+            opts.sort(() => Math.random() - 0.5);
+            const optDivs = document.querySelectorAll('.opt');
+            optDivs.forEach((d, i) => d.innerText = opts[i]);
+
+            resetTimer();
+        }
+
+        function check(el) {
+            if (!gameActive) return;
+            if (parseInt(el.innerText) === ans) {
+                score++;
+                document.getElementById('score').innerText = `Solved: ${score}/30`;
+                if (score >= 30) win();
+                else next();
+            } else {
+                fail('Wrong Answer!');
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timeInt);
+            const t = document.getElementById('timer');
+            t.style.transition = 'none';
+            t.style.width = '100%';
+            setTimeout(() => {
+                t.style.transition = '4s linear';
+                t.style.width = '0%';
+            }, 50);
+            timeInt = setTimeout(() => fail('Time Up!'), 4050);
+        }
+
+        function win() {
+            gameActive = false;
+            clearInterval(timeInt);
+            showUI('Win', 'Math Genius! Reward Unlocked.');
+        }
+
+        function fail(msg) {
+            gameActive = false;
+            clearInterval(timeInt);
+            showUI('Lose', msg);
+        }
+
+        function showUI(type, msg) {
+            document.getElementById('uic').style.display = 'block';
+            document.getElementById('status').innerText = type === 'Win' ? 'MISSION SUCCESS' : 'MISSION FAILED';
+            document.getElementById('msg').innerText = msg;
+            if (type === 'Win') document.getElementById('redeem').style.display = 'block';
+        }
+
+        next();
+    </script>
+</body>
+
+</html>

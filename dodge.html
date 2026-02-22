@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dodge Star | Earning Bot Games</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --green: #4ade80;
+            --gold: #fbbf24;
+            --red: #ff4500;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            background: #111;
+        }
+
+        canvas {
+            background: #000;
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #222;
+            max-width: 100%;
+            touch-action: none;
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid #333;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 12px;
+            font-weight: 800;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .btn-green {
+            background: var(--green);
+            color: #000;
+        }
+
+        .btn-back {
+            color: #888;
+            background: none;
+            text-decoration: underline;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-header">
+        <span id="score">Score: 0</span>
+        <span style="color:var(--green)">Reward: ₹500</span>
+    </div>
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="uic" class="ui-layer">
+        <h2 id="status">Win!</h2>
+        <p id="msg">Score 100 to redeem reward.</p>
+        <a id="redeem" href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796"
+            class="btn btn-green" style="display:none">REDEEM WIN</a>
+        <button id="retry" onclick="location.reload()" class="btn btn-gold">TRY AGAIN</button>
+        <a href="../index.html" class="btn btn-back">Exit to Main</a>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight - 60;
+
+        let score = 0;
+        let gameActive = true;
+        const player = { x: canvas.width / 2, y: canvas.height - 50, size: 20 };
+        const enemies = [];
+
+        function spawnEnemy() {
+            enemies.push({ x: Math.random() * canvas.width, y: -20, speed: 3 + Math.random() * 5 });
+        }
+
+        function update() {
+            if (!gameActive) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Player
+            ctx.fillStyle = '#4ade80';
+            ctx.fillRect(player.x - 10, player.y - 10, 20, 20);
+
+            // Enemies
+            ctx.fillStyle = '#ff4500';
+            enemies.forEach((e, i) => {
+                e.y += e.speed;
+                ctx.fillRect(e.x - 10, e.y - 10, 20, 20);
+
+                // Collision
+                if (Math.hypot(e.x - player.x, e.y - player.y) < player.size) {
+                    gameActive = false;
+                    showUI('Lose', 'You hit a star!');
+                }
+
+                if (e.y > canvas.height) {
+                    enemies.splice(i, 1);
+                    score++;
+                    document.getElementById('score').innerText = 'Score: ' + score;
+                    if (score >= 100) {
+                        gameActive = false;
+                        showUI('Win', 'Goal Reached!');
+                    }
+                }
+            });
+
+            if (Math.random() < 0.05) spawnEnemy();
+            requestAnimationFrame(update);
+        }
+
+        function showUI(type, msg) {
+            const uic = document.getElementById('uic');
+            uic.style.display = 'block';
+            document.getElementById('status').innerText = type === 'Win' ? 'MISSION SUCCESS!' : 'MISSION FAILED!';
+            document.getElementById('msg').innerText = msg;
+            if (type === 'Win') {
+                document.getElementById('redeem').style.display = 'block';
+                document.getElementById('retry').innerText = 'Play Again';
+            }
+        }
+
+        window.addEventListener('touchmove', e => {
+            player.x = e.touches[0].clientX;
+        });
+
+        update();
+    </script>
+</body>
+
+</html>

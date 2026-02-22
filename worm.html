@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Neon Worm | Earning Bot Games</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --green: #4ade80;
+            --gold: #fbbf24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: #fff;
+            text-align: center;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            background: #111;
+        }
+
+        canvas {
+            background: #000;
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #222;
+        }
+
+        .controls {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 300px;
+            margin: auto;
+        }
+
+        .ctrl {
+            background: #222;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            border: 1px solid #444;
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            background: rgba(0, 0, 0, 0.98);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid #333;
+            width: 85%;
+            max-width: 320px;
+            z-index: 100;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin-top: 15px;
+            border-radius: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .btn-green {
+            background: var(--green);
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-header">
+        <span id="score">Length: 1/50</span>
+        <span style="color:var(--green)">Reward: ₹5000</span>
+    </div>
+    <canvas id="gameCanvas"></canvas>
+
+    <div class="controls">
+        <div></div><button class="ctrl" onclick="dir('UP')">▲</button>
+        <div></div>
+        <button class="ctrl" onclick="dir('LEFT')">◀</button>
+        <button class="ctrl" onclick="dir('DOWN')">▼</button>
+        <button class="ctrl" onclick="dir('RIGHT')">▶</button>
+    </div>
+
+    <div id="uic" class="ui-layer">
+        <h2 id="status">Win!</h2>
+        <p id="msg">Reach 50 length to win.</p>
+        <a id="redeem" href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796"
+            class="btn btn-green" style="display:none">REDEEM WIN</a>
+        <button onclick="location.reload()" class="btn btn-gold">TRY AGAIN</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const box = 20;
+        canvas.width = 300;
+        canvas.height = 300;
+
+        let snake = [{ x: 8 * box, y: 8 * box }];
+        let food = { x: Math.floor(Math.random() * 15) * box, y: Math.floor(Math.random() * 15) * box };
+        let d = 'RIGHT';
+        let gameActive = true;
+
+        function dir(v) { d = v; }
+
+        function draw() {
+            if (!gameActive) return;
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0, 0, 300, 300);
+
+            for (let i = 0; i < snake.length; i++) {
+                ctx.fillStyle = (i == 0) ? "#4ade80" : "#ffffff";
+                ctx.fillRect(snake[i].x, snake[i].y, box, box);
+            }
+
+            ctx.fillStyle = "#ff4500";
+            ctx.fillRect(food.x, food.y, box, box);
+
+            let sX = snake[0].x;
+            let sY = snake[0].y;
+
+            if (d == "LEFT") sX -= box;
+            if (d == "UP") sY -= box;
+            if (d == "RIGHT") sX += box;
+            if (d == "DOWN") sY += box;
+
+            if (sX == food.x && sY == food.y) {
+                food = { x: Math.floor(Math.random() * 15) * box, y: Math.floor(Math.random() * 15) * box };
+                document.getElementById('score').innerText = `Length: ${snake.length + 1}/50`;
+                if (snake.length + 1 >= 50) win();
+            } else {
+                snake.pop();
+            }
+
+            let newHead = { x: sX, y: sY };
+
+            if (sX < 0 || sX >= 300 || sY < 0 || sY >= 300 || collision(newHead, snake)) {
+                fail();
+            }
+
+            snake.unshift(newHead);
+        }
+
+        function collision(head, array) {
+            for (let i = 0; i < array.length; i++) if (head.x == array[i].x && head.y == array[i].y) return true;
+            return false;
+        }
+
+        function win() { gameActive = false; showUI('Win', 'Neon Worm Legend! Reward Unlocked.'); }
+        function fail() { gameActive = false; showUI('Lose', 'Worm Crashed!'); }
+
+        function showUI(type, msg) {
+            document.getElementById('uic').style.display = 'block';
+            document.getElementById('status').innerText = type === 'Win' ? 'LEGENDARY WIN!' : 'CRASHED!';
+            if (type === 'Win') document.getElementById('redeem').style.display = 'block';
+        }
+
+        let game = setInterval(draw, 150);
+    </script>
+</body>
+
+</html>
