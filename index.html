@@ -6,262 +6,171 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Earning Bot | Spin & Earn Daily</title>
 
-    <!-- Performance Optimized & High-Speed Loading -->
+    <!-- Optimized Preconnects -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         media="print" onload="this.media='all'">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet"
-        font-display="swap">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-    <!-- Aggressive Monetization Scripts -->
+    <!-- Aggressive Monetization Zone (Auto-Inject Meta) -->
     <script async="async" data-cfasync="false"
         src="https://emotionallytonightintelligent.com/8682ea19e9e89730ada3ebf044a38d32/invoke.js"></script>
-    <script src="https://emotionallytonightintelligent.com/4b/27/5b/4b275b0f1fcd61051a1b18f9530c6708.js"></script>
-    <script src="https://emotionallytonightintelligent.com/7b/97/b1/7b97b1c5d9af77f99dd1412f3faa605e.js"></script>
-
-    <style>
-        #spinWheel {
-            max-width: 100%;
-            height: auto;
-            touch-action: none;
-        }
-
-        .game-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.98);
-            z-index: 3000;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .game-canvas-container {
-            background: #111;
-            border: 2px solid #333;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 360px;
-            height: 400px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .game-header {
-            width: 100%;
-            max-width: 360px;
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            color: var(--accent-gold);
-            font-weight: 800;
-        }
-
-        .game-fail-btn {
-            display: none;
-            margin-top: 20px;
-            width: 100%;
-            max-width: 300px;
-            text-decoration: none;
-            background: var(--accent-gold);
-            color: #000;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 800;
-            animation: pulse 1s infinite;
-        }
-
-        .game-board {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-    </style>
+    <script src="https://emotionallytonightintelligent.com/4b/27/5b/4b275b0f1fcd61051a1b18f9530c6708.js" defer></script>
+    <script src="https://emotionallytonightintelligent.com/7b/97/b1/7b97b1c5d9af77f99dd1412f3faa605e.js" defer></script>
 </head>
 
 <body>
-    <!-- Max Freedom Ad Container (Top) -->
-    <div id="container-8682ea19e9e89730ada3ebf044a38d32"></div>
+    <!-- Top-Level Ad Container -->
+    <div id="container-top" class="ad-freedom-zone">
+        <div id="container-8682ea19e9e89730ada3ebf044a38d32"></div>
+    </div>
 
-    <!-- Premium Header -->
+    <!-- Premium Sticky Header -->
     <header class="header">
         <div class="logo-container">
             <h1 class="logo-text" onclick="window.location.reload()">Earning Bot</h1>
         </div>
-        <div class="header-nav-scroll">
+        <nav class="header-nav-scroll">
             <a href="https://emotionallytonightintelligent.com/qqa944t3m?key=42f230195da20f1f737d6817dfe61345"
-                target="_blank" class="nav-tag hot">HOT</a>
+                target="_blank" class="nav-tag hot">HOT🔥</a>
             <a href="https://emotionallytonightintelligent.com/r0h7wid67?key=5592d0a21335a4ae378f156cc397bfe6"
                 target="_blank" class="nav-tag">Voice Calls</a>
             <a href="https://emotionallytonightintelligent.com/r0h7wid67?key=5592d0a21335a4ae378f156cc397bfe6"
                 target="_blank" class="nav-tag">Video Calls</a>
             <a href="https://emotionallytonightintelligent.com/r0h7wid67?key=5592d0a21335a4ae378f156cc397bfe6"
-                target="_blank" class="nav-tag">Dating</a>
+                target="_blank" class="nav-tag">Dating💞</a>
             <a href="https://emotionallytonightintelligent.com/r0h7wid67?key=5592d0a21335a4ae378f156cc397bfe6"
                 target="_blank" class="nav-tag">GIFs</a>
             <a href="https://emotionallytonightintelligent.com/r0h7wid67?key=5592d0a21335a4ae378f156cc397bfe6"
                 target="_blank" class="nav-tag">Memes</a>
             <a href="https://emotionallytonightintelligent.com/r0h7wid67?key=5592d0a21335a4ae378f156cc397bfe6"
-                target="_blank" class="nav-tag">Pics</a>
-        </div>
+                target="_blank" class="nav-tag">Cool Pics</a>
+        </nav>
     </header>
 
     <main class="main-content">
-        <!-- Dashboard Card -->
-        <div class="earnings-card">
+        <!-- Live Dashboard -->
+        <section class="earnings-card">
             <div class="earnings-label">Available Balance</div>
             <div class="earnings-value" id="balanceValue">₹0</div>
+        </section>
+
+        <!-- Main Monetization Zone 1 -->
+        <div class="ad-banner-container">
+            <script>
+                atOptions = {
+                    'key': '167365a441931359a5137df59bd1bdc2',
+                    'format': 'iframe',
+                    'height': 50,
+                    'width': 320,
+                    'params': {}
+                };
+            </script>
+            <script src="https://emotionallytonightintelligent.com/167365a441931359a5137df59bd1bdc2/invoke.js"></script>
         </div>
 
-        <!-- Spin Wheel Section -->
+        <!-- Interactive Spin Wheel -->
         <section class="wheel-section">
             <div class="wheel-container">
                 <div class="wheel-pointer"><i class="fas fa-caret-down"></i></div>
-                <canvas id="spinWheel" width="320" height="320"></canvas>
+                <canvas id="spinWheel" width="300" height="300"></canvas>
             </div>
-            <button id="spinBtn" class="main-spin-btn">SPIN NOW</button>
+            <button id="spinBtn" class="main-spin-btn">SPIN TO WIN NOW</button>
         </section>
 
-        <!-- Games Section: High Freedom Monetization -->
+        <!-- Reward Arcade Zone -->
         <section class="arcade-section">
-            <h3 class="section-title"><i class="fas fa-gamepad"></i> Win Reward Games</h3>
+            <h3 class="section-title"><i class="fas fa-gamepad"></i> Premium Reward Arcade</h3>
             <div class="games-grid">
-                <!-- 2D Games -->
+                <!-- Arcade Item List -->
                 <div class="game-card" onclick="startMegaGame('dodge')">
-                    <div class="game-meta">Win ₹500</div>
+                    <div class="game-meta">Reward: ₹500</div>
                     <h4>Dodge Master</h4>
                     <span class="game-tag">2D Action</span>
                 </div>
-                <div class="game-card" onclick="startMegaGame('jump')">
-                    <div class="game-meta">Win ₹1000</div>
-                    <h4>Sky Jumper</h4>
-                    <span class="game-tag">2D Platform</span>
-                </div>
-
-                <!-- Ad Freedom Break -->
-                <div id="container-8682ea19e9e89730ada3ebf044a38d32"></div>
-
-                <!-- Click Games -->
                 <div class="game-card" onclick="startMegaGame('click')">
-                    <div class="game-meta">Win ₹2000</div>
+                    <div class="game-meta">Reward: ₹2000</div>
                     <h4>Click Speedster</h4>
-                    <span class="game-tag">Fast Click</span>
+                    <span class="game-tag">Speed Challenge</span>
                 </div>
-                <div class="game-card" onclick="startMegaGame('gold')">
-                    <div class="game-meta">Win ₹1500</div>
-                    <h4>Gold Miner</h4>
-                    <span class="game-tag">Arcade Click</span>
+                <!-- Mid-Arcade Ad -->
+                <div class="ad-banner-container" style="grid-column: span 2;">
+                    <script
+                        src="https://emotionallytonightintelligent.com/167365a441931359a5137df59bd1bdc2/invoke.js"></script>
                 </div>
-
-                <!-- Puzzle Games -->
-                <div class="game-card" onclick="startMegaGame('match')">
-                    <div class="game-meta">Win ₹2500</div>
-                    <h4>Perfect Match</h4>
-                    <span class="game-tag">Puzzle</span>
-                </div>
-                <div class="game-card" onclick="startMegaGame('link')">
-                    <div class="game-meta">Win ₹5000</div>
-                    <h4>Pattern Link</h4>
-                    <span class="game-tag">Puzzle</span>
-                </div>
-
-                <!-- Memory Games -->
-                <div class="game-card" onclick="startMegaGame('flash')">
-                    <div class="game-meta">Win ₹3000</div>
-                    <h4>Flash Cards</h4>
-                    <span class="game-tag">Memory</span>
-                </div>
-                <div class="game-card" onclick="startMegaGame('seq')">
-                    <div class="game-meta">Win ₹4000</div>
-                    <h4>Sequence Repeat</h4>
-                    <span class="game-tag">Memory</span>
-                </div>
-
-                <!-- Quiz Games -->
                 <div class="game-card" onclick="startMegaGame('math')">
-                    <div class="game-meta">Win ₹1000</div>
+                    <div class="game-meta">Reward: ₹1000</div>
                     <h4>Mega Math</h4>
                     <span class="game-tag">Quiz</span>
                 </div>
-                <div class="game-card" onclick="startMegaGame('trivia')">
-                    <div class="game-meta">Win ₹2000</div>
-                    <h4>Fast Trivia</h4>
-                    <span class="game-tag">Quiz</span>
-                </div>
-
-                <!-- Arcade Games -->
-                <div class="game-card" onclick="startMegaGame('brick')">
-                    <div class="game-meta">Win ₹3500</div>
-                    <h4>Brick Buster</h4>
-                    <span class="game-tag">Arcade</span>
-                </div>
                 <div class="game-card" onclick="startMegaGame('space')">
-                    <div class="game-meta">Win ₹5000</div>
+                    <div class="game-meta">Reward: ₹5000</div>
                     <h4>Space Shooter</h4>
-                    <span class="game-tag">Arcade</span>
+                    <span class="game-tag">Classic Arcade</span>
+                </div>
+                <div class="game-card" onclick="startMegaGame('match')">
+                    <div class="game-meta">Reward: ₹2500</div>
+                    <h4>Perfect Match</h4>
+                    <span class="game-tag">Puzzle</span>
+                </div>
+                <div class="game-card" onclick="startMegaGame('flash')">
+                    <div class="game-meta">Reward: ₹3000</div>
+                    <h4>Flash Memory</h4>
+                    <span class="game-tag">Mental Game</span>
                 </div>
             </div>
         </section>
 
-        <!-- Quick Support Hub (As Requested) -->
+        <!-- Dynamic Support Hub -->
         <section class="support-section">
-            <h3 class="section-title"><i class="fas fa-play-circle"></i> Quick Support Hub</h3>
+            <h3 class="section-title"><i class="fas fa-info-circle"></i> Support Hub</h3>
             <div class="video-grid">
                 <a href="https://emotionallytonightintelligent.com/x8hwqv72xz?key=38d45a1aedbbb6ea28d603baadb16c3d"
                     target="_blank" class="video-item">
                     <div class="video-thumb"><i class="fas fa-play"></i><span class="duration">1:30</span></div>
                     <div class="video-meta">
-                        <h4>How to Withdraw Winnings</h4>
-                        <p>Complete step-by-step transfer guide</p>
+                        <h4>Withdrawal Guide 2026</h4>
+                        <p>Detailed verification & payout guide</p>
                     </div>
                 </a>
             </div>
         </section>
 
-        <!-- Ad Zone Footer -->
+        <!-- Final Monetization Zone -->
         <div class="ad-banner-container">
             <script src="https://emotionallytonightintelligent.com/167365a441931359a5137df59bd1bdc2/invoke.js"></script>
         </div>
     </main>
 
-    <!-- Game Overlay Player -->
+    <!-- Modal Game Overlay -->
     <div id="gameOverlay" class="game-overlay">
         <div class="game-header">
-            <span id="gameTitle">Game Name</span>
-            <span id="gameTimer">Time: 10s</span>
+            <span id="gameTitle">Game</span>
+            <span id="gameTimer">Timer: 10s</span>
         </div>
-        <div class="game-canvas-container" id="gameArea">
-            <div id="gameStatus" style="font-size: 1.2rem; text-align: center; padding: 20px;">Get 1,000,000 score to
-                win!</div>
-            <div class="game-board" id="gameBoard"></div>
+        <div class="game-canvas-container">
+            <div id="gameStatus" style="padding: 24px; text-align: center;">Mission: Score 1,000,000 to win Reward!
+            </div>
         </div>
-        <a href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796"
-            class="game-fail-btn" id="gameTryAgain">
-            <i class="fas fa-redo"></i> MISSION FAILED! TRY AGAIN
+        <a id="gameTryAgain"
+            href="https://emotionallytonightintelligent.com/yefth1e9e?key=672ebfd27cb3a77872d539957b23a796"
+            class="game-fail-btn">
+            FAILURE! TRY AGAIN FOR REWARD
         </a>
         <button onclick="closeGame()"
-            style="background: none; border: none; color: #fff; margin-top: 15px; text-decoration: underline;">Quit
+            style="margin-top: 20px; color: #666; background: none; border: none; text-decoration: underline;">Quit
             Game</button>
     </div>
 
-    <!-- Notifications -->
+    <!-- Final High-Freedom Ad Zone -->
+    <div id="container-bottom" class="ad-freedom-zone">
+        <div id="container-8682ea19e9e89730ada3ebf044a38d32_v2"></div>
+    </div>
+
+    <!-- Global Components -->
     <div id="toast" class="toast"></div>
-
-    <!-- Max Freedom Ad Container (Bottom) -->
-    <div id="container-8682ea19e9e89730ada3ebf044a38d32"></div>
-
     <script src="script.js"></script>
 </body>
 
